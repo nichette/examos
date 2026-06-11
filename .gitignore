@@ -1,0 +1,27 @@
+# Build artifacts
+*.iso
+*.img
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Encrypted answer files (never commit real data)
+*.gpg
+*.age
+
+# IDE / editor
+.vscode/
+.idea/
+.nvim/
+Session.vim
+*.swp
+*.swo
+.nvimrc
