@@ -1,0 +1,29 @@
+
+# --- ARCH LINUX BASELINE ---
+base
+linux
+linux-firmware
+amd-ucode
+intel-ucode
+mkinitcpio
+mkinitcpio-archiso
+hyperv
+arch-install-scripts
+parted
+dosfstools
+
+# --- SECURE EXAM APP ENVIRONMENT ---
+cage
+xorg-xwayland
+python
+python-gobject
+gtk3
+gnupg
+rsync
+open-vm-tools
+pv
+qemu-guest-agent
+syslinux
+virtualbox-guest-utils-nox
+
+

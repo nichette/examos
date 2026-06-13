@@ -2,6 +2,8 @@
 *.iso
 *.img
 *.log
+*.pkg.tar.zst
+*.db.tar.zst
 
 # Python
 __pycache__/
@@ -25,3 +27,7 @@ Session.vim
 *.swp
 *.swo
 .nvimrc
+
+# Folders to ignore
+out/
+work/
