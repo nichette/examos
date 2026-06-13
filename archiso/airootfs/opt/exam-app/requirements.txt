@@ -1,0 +1,14 @@
+# requirements.txt - Python dependencies for exam application
+# Install with: pip install -r requirements.txt --break-system-packages
+
+# GTK4 binding (already system-installed on Arch, but listed for clarity)
+PyGObject>=3.42.0
+
+# PAM authentication
+python-pam>=2.0.2
+
+# GPG encryption
+python-gnupg>=2.5.0
+
+# Additional security (optional but recommended)
+cryptography>=40.0.0

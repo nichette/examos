@@ -59,11 +59,28 @@ EOF
 
 # 7. Unpack the backpack! 
 echo "Installing base system..."
-pacstrap -C /tmp/custom-pacman.conf /mnt base linux linux-firmware amd-ucode intel-ucode cage xorg-xwayland python python-gobject gtk3 gnupg rsync grub efibootmgr
+pacstrap -C /tmp/custom-pacman.conf /mnt base linux linux-firmware amd-ucode intel-ucode cage xorg-xwayland python python-gobject gtk4 gnupg rsync grub efibootmgr
 
 # Move the custom Python Exam App into the new System
 echo "Copying Exam Application..."
 cp -r /opt/exam-app /mnt/opt
+# --- NEW: Set up Auto-Login for the student on the new hard drive ---
+echo "Configuring automatic login..."
+mkdir -p /mnt/etc/systemd/system/getty@tty1.service.d
+cat << 'CONFIG' > /mnt/etc/systemd/system/getty@tty1.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin exam-kiosk --noclear %I $TERM
+CONFIG
+
+# --- NEW: Set up Auto-Start for Cage and the Python App ---
+echo "Configuring graphical kiosk auto-start..."
+mkdir -p /mnt/etc/skel
+cat << 'CONFIG' > /mnt/etc/skel/.bash_profile
+if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    exec cage -- /opt/exam-app/main.py
+fi
+CONFIG
 
 # 8. Generate the file system table
 genfstab -U /mnt >> /mnt/etc/fstab

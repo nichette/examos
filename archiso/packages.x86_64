@@ -17,7 +17,7 @@ cage
 xorg-xwayland
 python
 python-gobject
-gtk3
+gtk4
 gnupg
 rsync
 open-vm-tools
