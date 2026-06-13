@@ -61,6 +61,10 @@ EOF
 echo "Installing base system..."
 pacstrap -C /tmp/custom-pacman.conf /mnt base linux linux-firmware amd-ucode intel-ucode cage xorg-xwayland python python-gobject gtk3 gnupg rsync grub efibootmgr
 
+# Move the custom Python Exam App into the new System
+echo "Copying Exam Application..."
+cp -r /opt/exam-app /mnt/opt
+
 # 8. Generate the file system table
 genfstab -U /mnt >> /mnt/etc/fstab
 
