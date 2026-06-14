@@ -154,15 +154,15 @@ Hope is **25× lighter** than traditional exam setups:
 | Technology | Purpose |
 |---|---|
 | **Arch Linux** | Minimal, hardened base operating system |
-| **GTK 4** | Monolithic kiosk application UI |
-| **Xorg** | Isolated display server (no desktop environment) |
+| **GTK 4 & libadwaita** | Monolithic kiosk application UI |
+| **Wayland(Cage)** | Isolated display server (no desktop environment) |
 | **PAM** | Pluggable Authentication Module for 2FA |
 | **GnuPG** | Submission encryption & signing |
-| **OpenCV** | Real-time face recognition agent |
-| **Python** | AI behavioral monitoring agents |
-| **Bash** | System scripts (`kiosk-wrapper.sh`, `install.sh`) |
+| **WebKitGtk** |  Renders the React UI natively within the GTK window|
+| **Python3** | Kiosk wrapper (hope_os_kiosk.py) |
+| **Bash** | System scripts (`profiledef.sh`, `auto_install.sh`, etc) |
 
-### Presentation Website (This Repository)
+### Application ( Frontend )
 
 | Technology | Purpose |
 |---|---|
@@ -182,56 +182,69 @@ Hope is **25× lighter** than traditional exam setups:
 
 ## 🚀 Getting Started
 
+The Hope platform consists of a custom frontend UI wrapped in a Python backend, which is then permanently baked into a custom Arch Linux ISO.
+
 ### Prerequisites
 
-- **Node.js** ≥ 18
-- **npm** or **bun**
+To build the locked-down operating system, you need an Arch Linux host machine (or VM) with the following tools:
+* `archiso` (for building the OS)
+* `git`
+* `npm` or `pnpm` (for compiling the React UI)
 
-### Installation
+### Installation ( Manual/Terminal )
 
 ```bash
 # Clone the repository
-git clone https://github.com/Aditisingh0102/trust-exam-shield.git
-cd trust-exam-shield
+git clone https://github.com/nichette/examos
+cd examos
 
-# Install dependencies
-npm install
-# or
-bun install
 
-# Start development server
-npm run dev
+### Step 1: Build the React Interface
+
+Before packing the application into the OS, you must compile the frontend web assets into static files that WebKit can read offline.
+
+1. Navigate to the application directory (`PROCTURED1`).
+
+2. Approve build scripts and install dependencies:
+   pnpm approve-builds
+   pnpm install
+
+3. Compile the production build:
+   pnpm run build
+
+4. Prepare the OS Blueprint
+   The compiled application must be placed in the exact directory where the custom OS expects to find it upon boot.
+   
+   i. Clear any previos build caches.
+   sudo rm -rf ~/Projects/examos/archiso/work
+   sudo rm -rf ~/Projects/examos/out/*
+
+   ii. Compile the ISO:
+   sudo mkarchiso -v -w ~/Projects/examos/archiso/work -o ~/Projects/examos/out ~/Projects/examos/archiso
+
 ```
 
-### Available Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start the Vite development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format code with Prettier |
-| `npm run deploy` | Build and deploy to GitHub Pages |
-
----
-
-## 📦 Deployment
-
-Hope's presentation website is deployed to **GitHub Pages**. The deployment process:
-
-1. Builds the production bundle via Vite
-2. Starts a preview server to generate static HTML
-3. Captures the rendered HTML for SPA fallback
-4. Deploys the `dist/client` directory via `gh-pages`
+## Installation ( Through ISO )
 
 ```bash
-# One-command deploy
-npm run deploy
+1. Install the ISO through the release section.
 ```
+---
 
-### ExamOS Deployment (Production)
+## 📦 ExamOS Deployment (Production)
 
+```bash
+Deployment & Testing
+
+    Flash the generated .iso file located in ~/Projects/examos/out/ to a USB drive using Rufus or BalenaEtcher.
+
+    Boot the target machine (or Virtual Machine) from the USB.
+
+    Note for VM Testing: Ensure 3D Acceleration is disabled in your hypervisor settings. The custom OS relies on WLR_RENDERER_ALLOW_SOFTWARE=1 to render the UI via the CPU during testing.
+
+    The system will auto-login the exam-kiosk user, launch the Wayland compositor, and automatically present the secure exam portal.
+
+```
 The actual exam operating system supports two deployment modes:
 
 **USB Flash Install**
@@ -254,27 +267,50 @@ $ ./install.sh --target /dev/sda
 ## 📁 Project Structure
 
 ```
-trust-exam-shield/
-├── src/
-│   ├── components/
-│   │   ├── hope/               # Main application components
-│   │   │   ├── HopePage.tsx    # Primary page (all sections)
-│   │   │   ├── Background.tsx  # Animated background + utility hooks
-│   │   │   └── ThreeSphere.tsx # 3D sphere effect (Three.js)
-│   │   └── ui/                 # shadcn/ui component library (46 components)
-│   ├── routes/
-│   │   ├── __root.tsx          # Root layout with meta tags & fonts
-│   │   └── index.tsx           # Home route → HopePage
-│   ├── hooks/                  # Custom React hooks
-│   ├── lib/                    # Utility functions
-│   ├── router.tsx              # TanStack Router configuration
-│   ├── styles.css              # Global styles & Tailwind imports
-│   └── routeTree.gen.ts        # Auto-generated route tree
-├── deploy.sh                   # GitHub Pages deployment script
-├── vite.config.ts              # Vite + TanStack Start configuration
-├── tsconfig.json               # TypeScript configuration
-├── components.json             # shadcn/ui configuration
-└── package.json                # Dependencies & scripts
+
+examos/
+├── archiso
+│   ├── airootfs
+│   ├── bootstrap_packages
+│   ├── efiboot
+│   ├── grub
+│   ├── out
+│   ├── packages.x86_64
+│   ├── pacman.conf
+│   ├── profiledef.sh
+│   ├── syslinux
+│   └── work
+├── docs
+│   └── architecture.md
+├── LICENSE
+├── README.md
+└── trust-exam-shield
+    ├── bunfig.toml
+    ├── bun.lock
+    ├── components.json
+    ├── deploy.sh
+    ├── eslint.config.js
+    ├── package.json
+    ├── package-lock.json
+    ├── src
+    ├── tsconfig.json
+    └── vite.config.ts
+
+
+PROCTURED1/                  # Main Application Source
+├── hope_os_kiosk.py         # Primary Python GTK4 Kiosk Wrapper
+├── electron-main.cjs        # Electron fallback configuration
+├── package.json             # Node dependencies and scripts
+├── pnpm-lock.yaml           # Strict dependency lockfile
+├── vite.config.ts           # Vite compiler configuration
+├── src/                     # React Frontend Source
+│   ├── App.jsx              # Main React Application
+│   ├── App.css              # Global styles
+│   ├── components/          # UI Components (BootScreen, ExamScreen, NtaDashboard, etc.)
+│   ├── views/               # Screen layouts (login, instructions, submit, etc.)
+│   └── data/                # Hardcoded/Mock data (questions, students, vault)
+└── dist/                    # Compiled static web assets (Generated after build)
+
 ```
 
 ---
