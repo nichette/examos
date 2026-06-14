@@ -285,11 +285,11 @@ trust-exam-shield/
 
 | Name | Role |
 |---|---|
-| **Aditi Singh** | System Architecture & Kiosk Lockdown |
-| **Ansh Gupta** | AI Agents & Behavioral Monitoring |
-| **Ambar Kumar** | Encryption & Security (GPG/PAM) |
-| **Rahul Rawat** | Backend & Blockchain Integration |
-| **Apurv Singh** | Frontend & UX Design |
+| **Aditi Singh** | Frontend Developer |
+| **Ansh Gupta** | Application Developer/Design |
+| **Ambar Kumar** | UI/UX |
+| **Rahul Rawat** | Blockchain & Research |
+| **Apurv Singh** | OS/System Design |
 
 ---
 

@@ -1,7 +1,0 @@
-{
-    "duration_minutes": 120,
-    "questions_file": "/media/examdrive/questions.gpg",
-    "answers_file": "/media/examdrive/answers.gpg",
-    "bootable_drive_path": "/media/examdrive",
-    "rules": ""
-}

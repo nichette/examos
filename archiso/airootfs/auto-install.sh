@@ -59,11 +59,11 @@ EOF
 
 # 7. Unpack the backpack! 
 echo "Installing base system..."
-pacstrap -C /tmp/custom-pacman.conf /mnt base linux linux-firmware amd-ucode intel-ucode cage xorg-xwayland python python-gobject gtk4 gnupg rsync grub efibootmgr
+pacstrap -C /tmp/custom-pacman.conf /mnt base linux linux-firmware amd-ucode intel-ucode mesa ttf-dejavu cage xorg-xwayland python python-pam python-gobject gtk4 polkit gsettings-desktop-schemas gnupg libadwaita webkitgtk-6.0 rsync grub efibootmgr
 
 # Move the custom Python Exam App into the new System
 echo "Copying Exam Application..."
-cp -r /opt/exam-app /mnt/opt
+cp -r /opt/PROCTURED1 /mnt/opt
 # --- NEW: Set up Auto-Login for the student on the new hard drive ---
 echo "Configuring automatic login..."
 mkdir -p /mnt/etc/systemd/system/getty@tty1.service.d
@@ -78,7 +78,17 @@ echo "Configuring graphical kiosk auto-start..."
 mkdir -p /mnt/etc/skel
 cat << 'CONFIG' > /mnt/etc/skel/.bash_profile
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec cage -- /opt/exam-app/main.py
+    # Fix the Virtual Machine Graphics Bugs
+    export WLR_NO_HARDWARE_CURSORS=1
+    export LIBGL_ALWAYS_SOFTWARE=1
+    export WLR_RENDERER_ALLOW_SOFTWARE=1
+    
+    # Run Cage and save any errors to a log file
+    dbus-run-session cage -- python3 /opt/PROCTURED1/hope_os_kiosk.py > /tmp/exam-crash.log 2>&1
+    
+    # The Safety Brake: If cage crashes, pause so the screen doesn't loop
+    echo "Application crashed. Waiting 60 seconds to prevent loop..."
+    sleep 60
 fi
 CONFIG
 

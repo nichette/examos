@@ -11,11 +11,14 @@ hyperv
 arch-install-scripts
 parted
 dosfstools
+polkit
+gsettings-desktop-schemas
 
 # --- SECURE EXAM APP ENVIRONMENT ---
 cage
 xorg-xwayland
 python
+python-pam
 python-gobject
 gtk4
 gnupg
@@ -25,5 +28,9 @@ pv
 qemu-guest-agent
 syslinux
 virtualbox-guest-utils-nox
+mesa
+ttf-dejavu
+libadwaita
+webkitgtk-6.0
 
 

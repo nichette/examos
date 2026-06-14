@@ -1,3 +1,6 @@
 [submodule "trust-exam-shield"]
 	path = trust-exam-shield
 	url = https://github.com/Aditisingh0102/trust-exam-shield.git
+[submodule "archiso/airootfs/opt/PROCTURED1"]
+	path = archiso/airootfs/opt/PROCTURED1
+	url = https://github.com/Ansh-gupta-07/PROCTURED1
