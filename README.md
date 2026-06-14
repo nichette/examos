@@ -236,13 +236,14 @@ Before packing the application into the OS, you must compile the frontend web as
 ```bash
 Deployment & Testing
 
-    Flash the generated .iso file located in ~/Projects/examos/out/ to a USB drive using Rufus or BalenaEtcher.
+    1. Flash the generated .iso file located in ~/Projects/examos/out/ to a USB drive using Rufus or BalenaEtcher.
 
-    Boot the target machine (or Virtual Machine) from the USB.
+    2. Boot the target machine (or Virtual Machine) from the USB.
 
-    Note for VM Testing: Ensure 3D Acceleration is disabled in your hypervisor settings. The custom OS relies on WLR_RENDERER_ALLOW_SOFTWARE=1 to render the UI via the CPU during testing.
+    3. Note for VM Testing: Ensure 3D Acceleration is disabled in your hypervisor settings. 
+    The custom OS relies on WLR_RENDERER_ALLOW_SOFTWARE=1 to render the UI via the CPU during testing.
 
-    The system will auto-login the exam-kiosk user, launch the Wayland compositor, and automatically present the secure exam portal.
+    4. The system will auto-login the exam-kiosk user, launch the Wayland compositor, and automatically present the secure exam portal.
 
 ```
 The actual exam operating system supports two deployment modes:
