@@ -180,6 +180,12 @@ Hope is **25× lighter** than traditional exam setups:
 
 ---
 
+## You can Try the Prototype App
+
+```bash
+    Link - https://ansh-gupta-07.github.io/PROCTURED1/
+```
+
 ## 🚀 Getting Started
 
 The Hope platform consists of a custom frontend UI wrapped in a Python backend, which is then permanently baked into a custom Arch Linux ISO.
