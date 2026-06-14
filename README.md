@@ -224,11 +224,6 @@ Before packing the application into the OS, you must compile the frontend web as
 
 ```
 
-## Installation ( Through ISO )
-
-```bash
-1. Install the ISO through the release section.
-```
 ---
 
 ## 📦 ExamOS Deployment (Production)
